@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.59.1] - 2026-09-16 — LAYOUT REESTRUCTURA + PISTA AUDITORÍA MOCKUP
+
+### Changed (Frontend — Layout)
+- **Sidebar/topbar light mode** — bg `#FFFFFF` con texto `#131816`. Vista (content area) `#F6F8F7`.
+- **Sidebar/topbar dark mode** — bg `#212826`, vista `#131816`.
+- **Sidebar nav hardcodeado** — 2 secciones: CALIDAD (Calidad de Datos, Cuadratura de Agregación) y AUDITORÍA (Pista de Auditoría, Trazabilidad CNR, Cambios en Maestro, Acceso y Permisos). Section labels: 10px, weight 700, `#9EA9A4`. Items: 13px, weight 400, tokens CSS.
+- **Active state** — rectángulo `#9FD8381F` (12% transparencia) + línea vertical izquierda `#9FD838` 3px.
+- **Sidebar expandido a 240px** — "Cuadratura de Agregación" cabe en una línea.
+- **Topbar** — h-14, logo POWER Digital `#9FD838` cuadrado rounded-lg, icono casa + breadcrumb dinámico, input búsqueda centrado 636×40px, campana, ayuda (?), separador, avatar `#083F32` con iniciales `#9FD838` + nombre + rol + dropdown con toggle light/dark.
+- **AdminSwitchers removidos**, Soporte removido del sidebar.
+- **ProtectedRoute bypass** — sin redirección a `/login` para desarrollo local.
+- **Main padding removido** — cada vista controla su propio padding.
+
+### Added (Frontend — Pista de Auditoría mockup)
+- **Vista `/auditoria/pista`** — título + subtítulo, 4 filtros CustomSelect "Entidad: Medidor", input búsqueda con lupa, badge verde "Cadena de auditoría verificada" con info SHA-256, tabla con 10 rows de ejemplo (timestamp, usuario, entidad, ID, acción, campo, antes→después, menú 3 puntos).
+- **Badge "Editar"** — `#CBDEFA` (light) / `#0E8C4333` (dark) via token `--color-action-badge`.
+- **Badge "Operativo"** — texto/borde `#F6F8F7`, pill redondeado.
+- **6 rutas placeholder** — "Página en construcción..." para las demás vistas.
+
+### Fixed (Frontend — Login)
+- **Right panel bg** — color fijo por tema (`#FFFFFF` light / `#1A1D1B` dark), no depende de tokens globales.
+
+---
+
 ## [2.59.0] - 2026-09-15 — FIGMA DESIGN SYSTEM + LOGIN REDISEÑO
 
 ### Changed (Frontend — Design System Figma)

@@ -133,11 +133,11 @@ export function LoginPage() {
         </div>
       </div>
 
-      <div className="relative flex flex-1 items-center justify-center bg-background px-6 py-10">
+      <div className="relative flex flex-1 items-center justify-center px-6 py-10" style={{ backgroundColor: theme === 'dark' ? '#1A1D1B' : '#FFFFFF' }}>
         <button
           type="button"
           onClick={toggleTheme}
-          className="absolute right-6 top-6 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors hover:bg-raised"
+          className="absolute right-6 top-6 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-foreground transition-colors hover:bg-surface"
           aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
         >
           {theme === 'dark' ? <SunIcon /> : <MoonIcon />}

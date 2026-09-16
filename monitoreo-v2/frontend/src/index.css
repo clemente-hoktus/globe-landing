@@ -3,13 +3,13 @@
 
 @theme {
   /* ── Light theme (default) — Figma EMS Power Digital ── */
-  --color-base:       #F6F8F7;
-  --color-background: #ffffff;
-  --color-foreground: #131818;
-  --color-surface:    #F6F8F7;
+  --color-base:       #FFFFFF;
+  --color-background: #F6F8F7;
+  --color-foreground: #131816;
+  --color-surface:    #FFFFFF;
   --color-raised:     #ECFBEE;
   --color-border:     #D0E4E1;
-  --color-text:       #131818;
+  --color-text:       #131816;
   --color-muted:      #727C78;
   --color-subtle:     #9CA8A4;
 
@@ -37,14 +37,15 @@
   --color-brand-fg:    #ffffff;
   --color-primary-btn:    #062C23;
   --color-primary-btn-fg: #ffffff;
+  --color-action-badge:   #CBDEFA;
 
-  /* ── App chrome (same bg, border separates) ── */
-  --color-sidebar:       #212826;
-  --color-sidebar-fg:    #F6F8F7;
-  --color-sidebar-muted: #9CA8A4;
-  --color-sidebar-border: #373F38;
-  --color-sidebar-hover: rgba(255,255,255,0.06);
-  --color-sidebar-active: rgba(255,255,255,0.09);
+  /* ── App chrome ── */
+  --color-sidebar:       #FFFFFF;
+  --color-sidebar-fg:    #131816;
+  --color-sidebar-muted: #727C78;
+  --color-sidebar-border: #D0E4E1;
+  --color-sidebar-hover: rgba(0,0,0,0.03);
+  --color-sidebar-active: rgba(0,0,0,0.05);
 
   /* ── Charts ── */
   --color-chart-1:          var(--color-brand);
@@ -67,7 +68,7 @@
     --color-base:       #0A090C;
     --color-background: #131816;
     --color-foreground: #F6F8F7;
-    --color-surface:    #05180F;
+    --color-surface:    #212826;
     --color-raised:     #082C23;
     --color-border:     #373F38;
     --color-text:       #F6F8F7;
@@ -85,6 +86,7 @@
     --color-sidebar-active: rgba(255,255,255,0.09);
     --color-primary-btn:    #ffffff;
     --color-primary-btn-fg: #212826;
+    --color-action-badge:   #0E8C4333;
     --shadow-panel: 0 1px 2px 0 rgb(0 0 0 / 0.2);
     --shadow-float: 0 4px 8px -1px rgb(0 0 0 / 0.3);
   }
@@ -115,29 +117,28 @@
   --shadow-float: 0 4px 8px -1px rgb(0 0 0 / 0.3);
 }
 :root[data-theme="light"] {
-  --color-base:       #F6F8F7;
-  --color-background: #ffffff;
-  --color-foreground: #131818;
-  --color-surface:    #F6F8F7;
+  --color-base:       #FFFFFF;
+  --color-background: #F6F8F7;
+  --color-foreground: #131816;
+  --color-surface:    #FFFFFF;
   --color-raised:     #ECFBEE;
   --color-border:     #D0E4E1;
-  --color-text:       #131818;
+  --color-text:       #131816;
   --color-muted:      #727C78;
   --color-subtle:     #9CA8A4;
   --color-success: #0E8C43;
   --color-warning: #c49030;
   --color-danger:  #c0392b;
   --color-info:    #4a6ee0;
-  --color-sidebar:       #212826;
-  --color-sidebar-fg:    #F6F8F7;
-  --color-sidebar-muted: #9CA8A4;
-  --color-sidebar-border: #373F38;
-  --color-sidebar-hover: rgba(255,255,255,0.06);
-  --color-sidebar-active: rgba(255,255,255,0.09);
+  --color-sidebar:       #FFFFFF;
+  --color-sidebar-fg:    #131816;
+  --color-sidebar-muted: #727C78;
+  --color-sidebar-border: #D0E4E1;
+  --color-sidebar-hover: rgba(0,0,0,0.03);
+  --color-sidebar-active: rgba(0,0,0,0.05);
   --color-primary-btn:    #062C23;
   --color-primary-btn-fg: #ffffff;
-  --color-primary-btn:    #062C23;
-  --color-primary-btn-fg: #ffffff;
+  --color-action-badge:   #CBDEFA;
 }
 
 body {

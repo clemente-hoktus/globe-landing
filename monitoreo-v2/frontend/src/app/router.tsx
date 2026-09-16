@@ -18,9 +18,18 @@ function EmptyDashboard() {
   );
 }
 
+function UnderConstruction() {
+  return (
+    <div className="flex h-full items-center justify-center">
+      <span className="text-sm text-muted">Página en construcción...</span>
+    </div>
+  );
+}
+
 function DashboardIndex() {
   return <EmptyDashboard />;
 }
+import { PistaAuditoriaPage } from '../features/auditoria/PistaAuditoriaPage';
 import { LoginRouteShell } from '../components/routing/LoginRouteShell';
 import {
   LazyPanelConsolidadoPage,
@@ -168,6 +177,12 @@ export const router = createBrowserRouter([
             children: [
               /* Dashboard — index redirects to Platform or General based on tenant */
               { index: true, element: <P any={DASH_ANY}><DashboardIndex /></P> },
+              { path: 'calidad/datos', element: <UnderConstruction /> },
+              { path: 'calidad/cuadratura', element: <UnderConstruction /> },
+              { path: 'auditoria/pista', element: <PistaAuditoriaPage /> },
+              { path: 'auditoria/trazabilidad-cnr', element: <UnderConstruction /> },
+              { path: 'auditoria/cambios-maestro', element: <UnderConstruction /> },
+              { path: 'auditoria/acceso-permisos', element: <UnderConstruction /> },
               /* Dashboard — Panel Consolidado (cross-tenant, gerencial profile) */
               { path: APP_ROUTES.consolidado, element: <P any={DASH_EXEC}><LazyPanelConsolidadoPage /></P> },
               /* Dashboard — Consumo Jerárquico (cross-tenant, gerencial profile) */

@@ -1,21 +1,37 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { useAppStore } from '../../store/useAppStore';
 import { useAuth } from '../../hooks/auth/useAuth';
-import { usePermissions } from '../../hooks/usePermissions';
-import { getVisibleNav, findActiveEntry } from '../../lib/unified-nav';
 import { NavModuleIcon } from './sidebar-icons';
-import { SidebarFlyout } from './SidebarFlyout';
-import { SidebarCollapsible, SidebarReveal } from './sidebar-motion';
+import { SidebarReveal } from './sidebar-motion';
+
+function NavItem({ label, path, currentPath, onNavigate }: { label: string; path: string; currentPath: string; onNavigate: (to: string) => void }) {
+  const isActive = currentPath === path || currentPath.startsWith(path + '/');
+  return (
+    <button
+      type="button"
+      onClick={() => onNavigate(path)}
+      className="w-full rounded-md py-2 text-left transition-colors block"
+      style={{
+        fontSize: '13px',
+        fontWeight: isActive ? 500 : 400,
+        color: isActive ? 'var(--color-sidebar-fg)' : 'var(--color-sidebar-muted)',
+        paddingLeft: '1.05rem',
+        paddingRight: '0.75rem',
+        backgroundColor: isActive ? '#9FD8381F' : 'transparent',
+        borderLeft: isActive ? '3px solid #9FD838' : '3px solid transparent',
+      }}
+    >
+      {label}
+    </button>
+  );
+}
 
 export function Sidebar() {
-  const { sidebarOpen, toggleSidebar, selectedTenantId } = useAppStore();
+  const { sidebarOpen, toggleSidebar } = useAppStore();
   const { logout } = useAuth();
-  const { hasAny } = usePermissions();
   const location = useLocation();
   const navigate = useNavigate();
-  const [contactOpen, setContactOpen] = useState(false);
-  const [flyout, setFlyout] = useState<string | null>(null);
 
   const expanded = sidebarOpen;
 
@@ -24,19 +40,6 @@ export function Sidebar() {
       useAppStore.getState().setSidebarOpen(false);
     }
   }, []);
-
-  const visibleNav = useMemo(
-    () => getVisibleNav(hasAny, !!selectedTenantId),
-    [hasAny, selectedTenantId],
-  );
-  const active = findActiveEntry(visibleNav, location.pathname);
-
-  useEffect(() => { expanded && setFlyout(null); }, [expanded]);
-  useEffect(() => { setFlyout(null); }, [location.pathname]);
-  useEffect(() => {
-    const timer = expanded ? undefined : window.setTimeout(() => setContactOpen(false), 300);
-    return () => { timer && clearTimeout(timer); };
-  }, [expanded]);
 
   const navItemClass = (isActive: boolean): string => {
     const layout = expanded ? 'gap-2.5 px-3 py-2 text-left text-sm' : 'justify-center gap-0 px-2.5 py-2.5';
@@ -49,7 +52,7 @@ export function Sidebar() {
   return (
     <aside
       className={`group/sidebar relative flex h-full min-h-0 shrink-0 flex-col overflow-visible bg-[var(--color-sidebar)] transition-[width] duration-300 ease-in-out motion-reduce:transition-none ${
-        expanded ? 'w-[210px]' : 'w-14'
+        expanded ? 'w-[240px]' : 'w-14'
       }`}
     >
       {/* Edge toggle — always visible chevron on sidebar border */}
@@ -66,64 +69,42 @@ export function Sidebar() {
 
       {/* Nav */}
       <nav className={`min-h-0 flex-1 overflow-y-auto py-3 transition-[padding] duration-300 ease-in-out ${expanded ? 'px-2' : 'px-1.5'}`}>
-        {visibleNav.map((group, gi) => (
-          <div key={group.label} className={gi > 0 ? 'mt-4' : ''}>
-            <SidebarReveal show={expanded}>
-              <div className="mb-1 px-3 text-xs font-semibold uppercase tracking-[0.06em] text-[var(--color-sidebar-muted)] opacity-60">
-                {group.label}
-              </div>
-            </SidebarReveal>
-            <div className="space-y-0.5">
-              {group.entries.map((entry, ei) => {
-                const isActive = active?.groupIdx === gi && active?.entryIdx === ei;
-                return (
-                  <button
-                    key={entry.basePath}
-                    type="button"
-                    onClick={() => navigate(entry.to)}
-                    title={expanded ? undefined : entry.label}
-                    className={navItemClass(isActive)}
-                  >
-                    <NavModuleIcon name={entry.icon} />
-                    <SidebarReveal show={expanded}>
-                      <span className="min-w-0 flex-1 truncate leading-tight">{entry.label}</span>
-                    </SidebarReveal>
-                  </button>
-                );
-              })}
-            </div>
+        <SidebarReveal show={expanded}>
+          <div className="mb-1 px-3 uppercase tracking-[0.08em]" style={{ fontSize: '10px', fontWeight: 700, color: 'var(--color-sidebar-muted)' }}>
+            Calidad
           </div>
-        ))}
-      </nav>
+        </SidebarReveal>
+        {expanded && (
+          <div className="space-y-0.5">
+            {[
+              { label: 'Calidad de Datos', path: '/calidad/datos' },
+              { label: 'Cuadratura de Agregación', path: '/calidad/cuadratura' },
+            ].map((item) => (
+              <NavItem key={item.path} label={item.label} path={item.path} currentPath={location.pathname} onNavigate={navigate} />
+            ))}
+          </div>
+        )}
 
-      {/* Support */}
-      <div className={`shrink-0 border-t border-[var(--color-sidebar-border)] transition-[padding] duration-300 ${expanded ? 'px-3 py-3' : 'px-1.5 py-2'}`}>
-        <div className="relative">
-          <button type="button" title="Soporte y contacto" onClick={() => { expanded ? setContactOpen((o) => !o) : setFlyout(flyout === 'support' ? null : 'support'); }} className={`${navItemClass(contactOpen || flyout === 'support')} w-full`}>
-            <NavModuleIcon name="support" className="h-[18px] w-[18px] shrink-0" />
-            <SidebarReveal show={expanded}>
-              <span className="flex-1 text-left">Soporte</span>
-              <svg className={`h-3 w-3 shrink-0 transition-transform duration-300 ${contactOpen ? 'rotate-180' : ''}`} viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 5l3 3 3-3" /></svg>
-            </SidebarReveal>
-          </button>
-          {!expanded && (
-            <SidebarFlyout open={flyout === 'support'} onClose={() => setFlyout(null)} title="Soporte" className="w-56">
-              <div className="space-y-1 p-2 text-sm">
-                <p className="font-medium text-[var(--color-sidebar-fg)]">Globe Power</p>
-                <a href="mailto:atencion@globepower.cl" className="block truncate text-[var(--color-sidebar-muted)] hover:text-[var(--color-sidebar-fg)]">atencion@globepower.cl</a>
-                <a href="tel:+56227810274" className="block text-[var(--color-sidebar-muted)] hover:text-[var(--color-sidebar-fg)]">227810274</a>
-              </div>
-            </SidebarFlyout>
+        <div className="mt-6">
+          <SidebarReveal show={expanded}>
+            <div className="mb-1 px-3 uppercase tracking-[0.08em]" style={{ fontSize: '10px', fontWeight: 700, color: 'var(--color-sidebar-muted)' }}>
+              Auditoría
+            </div>
+          </SidebarReveal>
+          {expanded && (
+            <div className="space-y-0.5">
+              {[
+                { label: 'Pista de Auditoría', path: '/auditoria/pista' },
+                { label: 'Trazabilidad CNR', path: '/auditoria/trazabilidad-cnr' },
+                { label: 'Cambios en Maestro', path: '/auditoria/cambios-maestro' },
+                { label: 'Acceso y Permisos', path: '/auditoria/acceso-permisos' },
+              ].map((item) => (
+                <NavItem key={item.path} label={item.label} path={item.path} currentPath={location.pathname} onNavigate={navigate} />
+              ))}
+            </div>
           )}
         </div>
-        <SidebarCollapsible open={expanded && contactOpen}>
-          <div className="mt-2 space-y-0.5">
-            <p className="text-sm font-medium text-[var(--color-sidebar-fg)]">Globe Power</p>
-            <a href="mailto:atencion@globepower.cl" className="block truncate text-sm text-[var(--color-sidebar-muted)] hover:text-[var(--color-sidebar-fg)]">atencion@globepower.cl</a>
-            <a href="tel:+56227810274" className="block text-sm text-[var(--color-sidebar-muted)] hover:text-[var(--color-sidebar-fg)]">227810274</a>
-          </div>
-        </SidebarCollapsible>
-      </div>
+      </nav>
 
       {/* Logout */}
       <div className={`shrink-0 border-t border-[var(--color-sidebar-border)] transition-[padding] duration-300 ${expanded ? 'px-3 py-3' : 'px-1.5 py-2'}`}>
