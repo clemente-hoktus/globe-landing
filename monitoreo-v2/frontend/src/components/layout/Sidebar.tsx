@@ -5,6 +5,16 @@ import { useAuth } from '../../hooks/auth/useAuth';
 import { NavModuleIcon } from './sidebar-icons';
 import { SidebarReveal } from './sidebar-motion';
 
+function SidebarSection({ label, expanded }: { label: string; expanded: boolean }) {
+  return (
+    <SidebarReveal show={expanded}>
+      <div className="mb-1 px-3 uppercase tracking-[0.08em]" style={{ fontSize: '10px', fontWeight: 700, color: 'var(--color-sidebar-muted)' }}>
+        {label}
+      </div>
+    </SidebarReveal>
+  );
+}
+
 function NavItem({ label, path, currentPath, onNavigate }: { label: string; path: string; currentPath: string; onNavigate: (to: string) => void }) {
   const isActive = currentPath === path || currentPath.startsWith(path + '/');
   return (
@@ -28,7 +38,7 @@ function NavItem({ label, path, currentPath, onNavigate }: { label: string; path
 }
 
 export function Sidebar() {
-  const { sidebarOpen, toggleSidebar } = useAppStore();
+  const { sidebarOpen, toggleSidebar, workProfile } = useAppStore();
   const { logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -69,41 +79,65 @@ export function Sidebar() {
 
       {/* Nav */}
       <nav className={`min-h-0 flex-1 overflow-y-auto py-3 transition-[padding] duration-300 ease-in-out ${expanded ? 'px-2' : 'px-1.5'}`}>
-        <SidebarReveal show={expanded}>
-          <div className="mb-1 px-3 uppercase tracking-[0.08em]" style={{ fontSize: '10px', fontWeight: 700, color: 'var(--color-sidebar-muted)' }}>
-            Calidad
-          </div>
-        </SidebarReveal>
-        {expanded && (
-          <div className="space-y-0.5">
-            {[
-              { label: 'Calidad de Datos', path: '/calidad/datos' },
-              { label: 'Cuadratura de Agregación', path: '/calidad/cuadratura' },
-            ].map((item) => (
-              <NavItem key={item.path} label={item.label} path={item.path} currentPath={location.pathname} onNavigate={navigate} />
-            ))}
-          </div>
+        {workProfile === 'Auditoría' ? (
+          <>
+            <SidebarSection label="Calidad" expanded={expanded} />
+            {expanded && (
+              <div className="space-y-0.5">
+                {[
+                  { label: 'Calidad de Datos', path: '/calidad/datos' },
+                  { label: 'Cuadratura de Agregación', path: '/calidad/cuadratura' },
+                ].map((item) => (
+                  <NavItem key={item.path} label={item.label} path={item.path} currentPath={location.pathname} onNavigate={navigate} />
+                ))}
+              </div>
+            )}
+            <div className="mt-6">
+              <SidebarSection label="Auditoría" expanded={expanded} />
+              {expanded && (
+                <div className="space-y-0.5">
+                  {[
+                    { label: 'Pista de Auditoría', path: '/auditoria/pista' },
+                    { label: 'Trazabilidad CNR', path: '/auditoria/trazabilidad-cnr' },
+                    { label: 'Cambios en Maestro', path: '/auditoria/cambios-maestro' },
+                    { label: 'Acceso y Permisos', path: '/auditoria/acceso-permisos' },
+                  ].map((item) => (
+                    <NavItem key={item.path} label={item.label} path={item.path} currentPath={location.pathname} onNavigate={navigate} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <SidebarSection label="Principal" expanded={expanded} />
+            {expanded && (
+              <div className="space-y-0.5">
+                {[
+                  { label: 'Dashboard', path: '/gerencial/dashboard' },
+                  { label: 'Consumo', path: '/gerencial/consumo' },
+                  { label: 'Equipos y Zonas', path: '/gerencial/equipos-zonas' },
+                ].map((item) => (
+                  <NavItem key={item.path} label={item.label} path={item.path} currentPath={location.pathname} onNavigate={navigate} />
+                ))}
+              </div>
+            )}
+            <div className="mt-6">
+              <SidebarSection label="Gestión" expanded={expanded} />
+              {expanded && (
+                <div className="space-y-0.5">
+                  {[
+                    { label: 'Alertas', path: '/gerencial/alertas' },
+                    { label: 'Auditoría', path: '/gerencial/auditoria' },
+                    { label: 'Reportes', path: '/gerencial/reportes' },
+                  ].map((item) => (
+                    <NavItem key={item.path} label={item.label} path={item.path} currentPath={location.pathname} onNavigate={navigate} />
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
         )}
-
-        <div className="mt-6">
-          <SidebarReveal show={expanded}>
-            <div className="mb-1 px-3 uppercase tracking-[0.08em]" style={{ fontSize: '10px', fontWeight: 700, color: 'var(--color-sidebar-muted)' }}>
-              Auditoría
-            </div>
-          </SidebarReveal>
-          {expanded && (
-            <div className="space-y-0.5">
-              {[
-                { label: 'Pista de Auditoría', path: '/auditoria/pista' },
-                { label: 'Trazabilidad CNR', path: '/auditoria/trazabilidad-cnr' },
-                { label: 'Cambios en Maestro', path: '/auditoria/cambios-maestro' },
-                { label: 'Acceso y Permisos', path: '/auditoria/acceso-permisos' },
-              ].map((item) => (
-                <NavItem key={item.path} label={item.label} path={item.path} currentPath={location.pathname} onNavigate={navigate} />
-              ))}
-            </div>
-          )}
-        </div>
       </nav>
 
       {/* Logout */}

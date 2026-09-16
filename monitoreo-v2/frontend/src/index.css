@@ -38,6 +38,10 @@
   --color-primary-btn:    #062C23;
   --color-primary-btn-fg: #ffffff;
   --color-action-badge:   #CBDEFA;
+  --color-card:           #FFFFFF;
+  --color-card-border:    #D0E4E1;
+  --color-card-fg:        #131816;
+  --color-card-muted:     #727C78;
 
   /* ── App chrome ── */
   --color-sidebar:       #FFFFFF;
@@ -87,6 +91,10 @@
     --color-primary-btn:    #ffffff;
     --color-primary-btn-fg: #212826;
     --color-action-badge:   #0E8C4333;
+    --color-card:           #062C23;
+    --color-card-border:    #26332C;
+    --color-card-fg:        #EDF1EF;
+    --color-card-muted:     #8C9993;
     --shadow-panel: 0 1px 2px 0 rgb(0 0 0 / 0.2);
     --shadow-float: 0 4px 8px -1px rgb(0 0 0 / 0.3);
   }
@@ -113,6 +121,11 @@
   --color-sidebar-active: rgba(255,255,255,0.09);
   --color-primary-btn:    #ffffff;
   --color-primary-btn-fg: #212826;
+  --color-action-badge:   #0E8C4333;
+  --color-card:           #062C23;
+  --color-card-border:    #26332C;
+  --color-card-fg:        #EDF1EF;
+  --color-card-muted:     #8C9993;
   --shadow-panel: 0 1px 2px 0 rgb(0 0 0 / 0.2);
   --shadow-float: 0 4px 8px -1px rgb(0 0 0 / 0.3);
 }
@@ -139,6 +152,10 @@
   --color-primary-btn:    #062C23;
   --color-primary-btn-fg: #ffffff;
   --color-action-badge:   #CBDEFA;
+  --color-card:           #FFFFFF;
+  --color-card-border:    #D0E4E1;
+  --color-card-fg:        #131816;
+  --color-card-muted:     #727C78;
 }
 
 body {

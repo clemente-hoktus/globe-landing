@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.59.2] - 2026-09-16 — PERFIL GERENCIAL + DASHBOARD MOCKUP
+
+### Added (Frontend — Perfil Gerencial)
+- **Modo de trabajo** en dropdown de usuario — toggle entre "Auditoría" y "Gerencial". Persiste en `useAppStore` (sessionStorage). Al cambiar perfil navega a `/`.
+- **Sidebar Gerencial** — PRINCIPAL (Dashboard, Consumo, Equipos y Zonas) + GESTIÓN (Alertas, Auditoría, Reportes). 6 rutas placeholder.
+- **Dashboard Gerencial mockup** (`/gerencial/dashboard`) — título + "Vista general del consumo" + select "Últimos 30 días" + botón "Exportar". 4 KPI cards (Consumo total, Costo Energético, Demanda máxima, Alertas activas). Gráfico línea+área "Consumo energético" (2026 sólida + 2025 punteada, eje X E-D). Panel "Consumo por zona" con 5 barras horizontales. Tabla "Alertas recientes" con columnas EQUIPO/ZONA, TIPO, SEVERIDAD, HACE, ESTADO + link "Ver todas".
+- **Tokens `--color-card`** — cards adaptan light (`#FFFFFF`) / dark (`#062C23`). Incluidos en `@theme`, `prefers-color-scheme: dark`, `data-theme="dark"` y `data-theme="light"`.
+
+### Changed (Frontend — Topbar)
+- **Breadcrumb condicional** — Auditoría: `🏠 / Vista` (font-medium). Gerencial: `🏠 Inicio / Vista` (font-bold).
+- **Input búsqueda centrado** — `min(636px, 40vw)` responsive para 13".
+- **Campana + ayuda (?) + separador** antes del menú usuario.
+- **Avatar** — bg `#083F32`, iniciales `#9FD838`, 32×32px + nombre + perfil activo.
+
+### Fixed (Frontend)
+- **Dark theme tokens faltantes** en `data-theme="dark"` — `--color-card`, `--color-card-border`, `--color-card-fg`, `--color-card-muted`, `--color-action-badge`.
+- **Dashboard no se deforma** — alturas fijas (cards 118px, gráficos 300px) con scroll vertical, sin flex vertical que comprime.
+
+---
+
 ## [2.59.1] - 2026-09-16 — LAYOUT REESTRUCTURA + PISTA AUDITORÍA MOCKUP
 
 ### Changed (Frontend — Layout)

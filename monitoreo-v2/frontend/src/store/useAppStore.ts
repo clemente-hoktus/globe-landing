@@ -17,13 +17,15 @@ interface AppState {
   selectedBuildingId: string | null;
   viewAsRole: ViewAsRole;
   selectedTenantId: string | null;
-  selectedOperator: string | null; // store/brand name for Multi Operador mode
+  selectedOperator: string | null;
+  workProfile: string;
   setSidebarOpen: (open: boolean) => void;
   toggleSidebar: () => void;
   setSelectedBuildingId: (id: string | null) => void;
   setViewAsRole: (role: ViewAsRole) => void;
   setSelectedTenantId: (id: string | null) => void;
   setSelectedOperator: (name: string | null) => void;
+  setWorkProfile: (profile: string) => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -34,12 +36,14 @@ export const useAppStore = create<AppState>()(
       viewAsRole: null,
       selectedTenantId: null,
       selectedOperator: null,
+      workProfile: 'Auditoría',
       setSidebarOpen: (sidebarOpen) => set({ sidebarOpen }),
       toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
       setSelectedBuildingId: (selectedBuildingId) => set({ selectedBuildingId, selectedOperator: null }),
       setViewAsRole: (viewAsRole) => set({ viewAsRole, selectedOperator: null, selectedBuildingId: null }),
       setSelectedTenantId: (selectedTenantId) => set({ selectedTenantId, selectedOperator: null, selectedBuildingId: null }),
       setSelectedOperator: (selectedOperator) => set({ selectedOperator }),
+      setWorkProfile: (workProfile) => set({ workProfile }),
     }),
     {
       name: 'ems-app-state',

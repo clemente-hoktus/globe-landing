@@ -30,6 +30,7 @@ function DashboardIndex() {
   return <EmptyDashboard />;
 }
 import { PistaAuditoriaPage } from '../features/auditoria/PistaAuditoriaPage';
+import { DashboardGerencialPage } from '../features/gerencial/DashboardGerencialPage';
 import { LoginRouteShell } from '../components/routing/LoginRouteShell';
 import {
   LazyPanelConsolidadoPage,
@@ -183,6 +184,12 @@ export const router = createBrowserRouter([
               { path: 'auditoria/trazabilidad-cnr', element: <UnderConstruction /> },
               { path: 'auditoria/cambios-maestro', element: <UnderConstruction /> },
               { path: 'auditoria/acceso-permisos', element: <UnderConstruction /> },
+              { path: 'gerencial/dashboard', element: <DashboardGerencialPage /> },
+              { path: 'gerencial/consumo', element: <UnderConstruction /> },
+              { path: 'gerencial/equipos-zonas', element: <UnderConstruction /> },
+              { path: 'gerencial/alertas', element: <UnderConstruction /> },
+              { path: 'gerencial/auditoria', element: <UnderConstruction /> },
+              { path: 'gerencial/reportes', element: <UnderConstruction /> },
               /* Dashboard — Panel Consolidado (cross-tenant, gerencial profile) */
               { path: APP_ROUTES.consolidado, element: <P any={DASH_EXEC}><LazyPanelConsolidadoPage /></P> },
               /* Dashboard — Consumo Jerárquico (cross-tenant, gerencial profile) */
