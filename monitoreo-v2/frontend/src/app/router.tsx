@@ -5,19 +5,6 @@ import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 import { RequirePerms } from '../components/auth/RequirePerms';
 import { RequireTenantLayout } from '../components/ui/RequireTenant';
 
-function EmptyDashboard() {
-  return (
-    <div className="flex h-full items-center justify-center">
-      <div className="flex flex-col items-center gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full" style={{ backgroundColor: '#6BA015' }}>
-          <svg className="h-7 w-7 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
-        </div>
-        <span className="text-lg font-semibold text-foreground">POWER Digital</span>
-      </div>
-    </div>
-  );
-}
-
 function UnderConstruction() {
   return (
     <div className="flex h-full items-center justify-center">
@@ -26,9 +13,6 @@ function UnderConstruction() {
   );
 }
 
-function DashboardIndex() {
-  return <EmptyDashboard />;
-}
 import { PistaAuditoriaPage } from '../features/auditoria/PistaAuditoriaPage';
 import { DashboardGerencialPage } from '../features/gerencial/DashboardGerencialPage';
 import { LoginRouteShell } from '../components/routing/LoginRouteShell';
@@ -102,6 +86,17 @@ import {
   LazyCompaniesPage,
   LazyPlatformDashboardPage,
   LazyBuildingDetailPage,
+  LazyTenantUnitDetailPage,
+  LazyResumenPage,
+  LazyCentrosPage,
+  LazyCentroDetailPage,
+  LazyRemarcadoresPage,
+  LazyRemarcadorDetailPage,
+  LazyConsumoMockPage,
+  LazyMargenesPage,
+  LazyAlertasMockPage,
+  LazyReportesMockPage,
+  LazyFacturasMockPage,
   LazyMeterDetailPage,
   LazyMeterReadingsPage,
   LazyProfilePage,
@@ -177,7 +172,7 @@ export const router = createBrowserRouter([
             element: <LayoutShell />,
             children: [
               /* Dashboard — index redirects to Platform or General based on tenant */
-              { index: true, element: <P any={DASH_ANY}><DashboardIndex /></P> },
+              { index: true, element: <Navigate to="/resumen" replace /> },
               { path: 'calidad/datos', element: <UnderConstruction /> },
               { path: 'calidad/cuadratura', element: <UnderConstruction /> },
               { path: 'auditoria/pista', element: <PistaAuditoriaPage /> },
@@ -324,6 +319,21 @@ export const router = createBrowserRouter([
               { path: APP_ROUTES.seguridadPam, element: <P any={AUDIT}><LazySeguridadPamPage /></P> },
 
               /* Edificios & Medidores (listas cross-tenant) */
+              /* EMS — Núcleo (mock) */
+              { path: APP_ROUTES.resumen, element: <LazyResumenPage /> },
+              { path: APP_ROUTES.centroDetail, element: <LazyCentroDetailPage /> },
+              { path: APP_ROUTES.centros, element: <LazyCentrosPage /> },
+              { path: APP_ROUTES.remarcadorDetail, element: <LazyRemarcadorDetailPage /> },
+              { path: APP_ROUTES.remarcadores, element: <LazyRemarcadoresPage /> },
+
+              /* EMS — Add-ons (mock) */
+              { path: 'consumo', element: <LazyConsumoMockPage /> },
+              { path: 'margenes', element: <LazyMargenesPage /> },
+              { path: 'alertas', element: <LazyAlertasMockPage /> },
+              { path: 'reportes', element: <LazyReportesMockPage /> },
+              { path: 'facturas', element: <LazyFacturasMockPage /> },
+
+              { path: APP_ROUTES.unitDetail, element: <P any={BUILDINGS}><LazyTenantUnitDetailPage /></P> },
               { path: APP_ROUTES.buildingDetail, element: <P any={BUILDINGS}><LazyBuildingDetailPage /></P> },
               { path: APP_ROUTES.monitoring.meterDetail, element: <P any={MONITORING}><LazyMeterDetailPage /></P> },
               { path: APP_ROUTES.monitoring.meterReadings, element: <P any={MONITORING}><LazyMeterReadingsPage /></P> },

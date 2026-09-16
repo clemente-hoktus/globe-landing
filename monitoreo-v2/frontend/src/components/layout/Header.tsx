@@ -26,8 +26,6 @@ export function Header() {
   const breadcrumb = BREADCRUMB_MAP[location.pathname];
   const [menuOpen, setMenuOpen] = useState(false);
   const [isDark, setIsDark] = useState(() => document.documentElement.getAttribute('data-theme') === 'dark' || (!document.documentElement.getAttribute('data-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches));
-  const workProfile = useAppStore((s) => s.workProfile);
-  const setWorkProfile = useAppStore((s) => s.setWorkProfile);
   const btnRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   useClickOutside([btnRef, menuRef], () => setMenuOpen(false), menuOpen);
@@ -48,15 +46,8 @@ export function Header() {
         {sidebarOpen && <span className="text-sm font-semibold text-sidebar-fg truncate">POWER Digital</span>}
       </div>
       <div className="flex items-center gap-2">
-        <button type="button" onClick={() => navigate('/')} className="flex items-center gap-1 rounded-lg px-1 py-1 text-sidebar-muted transition-colors hover:text-sidebar-fg hover:bg-sidebar-hover shrink-0">
-          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
-          {breadcrumb && workProfile === 'Gerencial' && <span className="text-xs">Inicio</span>}
-        </button>
         {breadcrumb && (
-          <>
-            <span className="text-sidebar-muted text-xs">/</span>
-            <span className={`text-sidebar-fg text-xs ${workProfile === 'Gerencial' ? 'font-bold' : 'font-medium'}`}>{breadcrumb}</span>
-          </>
+          <span className="text-sidebar-fg text-xs font-medium">{breadcrumb}</span>
         )}
       </div>
       <div className="flex-1" />
@@ -104,7 +95,7 @@ export function Header() {
           </span>
           <div className="hidden sm:flex flex-col items-start leading-tight">
             <span style={{ fontSize: '12px', fontWeight: 600, color: '#F6F8F7' }}>{user?.displayName ?? 'Usuario'}</span>
-            <span style={{ fontSize: '11px', fontWeight: 400, color: '#9EA9A4' }}>{workProfile}</span>
+            <span style={{ fontSize: '11px', fontWeight: 400, color: '#9EA9A4' }}>Administrador</span>
           </div>
           <svg width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="#727C78" strokeWidth="1.5" strokeLinecap="round" className="hidden sm:block"><path d="M1 1l4 4 4-4" /></svg>
         </button>
@@ -128,19 +119,6 @@ export function Header() {
             >
               Configuracion
             </button>
-            <div style={{ borderTop: '1px solid var(--color-border)', margin: '4px 0' }} />
-            <div className="px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted">Modo de trabajo</div>
-            {['Auditoría', 'Gerencial'].map((p) => (
-              <button
-                key={p}
-                type="button"
-                onClick={() => { setWorkProfile(p); setMenuOpen(false); navigate('/'); }}
-                className="flex w-full items-center gap-2 px-3 py-2 text-left text-xs text-foreground transition-colors hover:bg-surface"
-              >
-                {p === workProfile && <span style={{ color: '#9FD838', fontSize: '10px' }}>●</span>}
-                <span style={{ marginLeft: p === workProfile ? 0 : '14px' }}>{p}</span>
-              </button>
-            ))}
             <div style={{ borderTop: '1px solid var(--color-border)', margin: '4px 0' }} />
             <button
               type="button"

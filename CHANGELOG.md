@@ -1,5 +1,44 @@
 # Changelog
 
+## [2.60.0] - 2026-09-16 — EMS POWER DIGITAL PRODUCT PIVOT
+
+### Changed (Frontend — Design System)
+- **Tokens CSS alineados a Figma** — Colores semánticos Light/Dark actualizados según docs v0.4. Superficies dark pasan de forest a rampa neutral (`bg/canvas: #131816`, `bg/surface: #212826`, `bg/sunken: #0A0E0C`). Variante "dark forest" descartada.
+- **Font Inter → Geist** — `@fontsource/geist` + `@fontsource/geist-mono` reemplazan Inter Variable. Geist Sans para interfaz, Geist Mono para datos/KPIs/timestamps.
+- **Tokens nuevos** — `accent`, `accent-strong`, `accent-ink`, `focus-ring`, `text-secondary`, `border-strong`, tokens de estado `-ink`/`-bg` para success/warning/danger/info.
+- **Cards dark sin borde** — `--color-card-border: transparent` en dark. Cards flotan sobre canvas solo por contraste, mismo tono que sidebar.
+
+### Changed (Frontend — Sidebar + Navegación)
+- **Sidebar EMS** — NÚCLEO (Resumen, Centros, Remarcadores) + ADD-ONS (Consumo, Márgenes, Alertas, Reportes, Facturas). Sin modo Auditoría.
+- **Sidebar fijo** — Removido toggle de colapsar. Ancho fijo 240px.
+- **Ícono casa removido** del topbar. Breadcrumb simplificado.
+- **Perfil "Administrador"** — Removido toggle Auditoría/Gerencial del menú usuario.
+- **`/` redirige a `/resumen`** — Entrada única al dashboard EMS.
+
+### Added (Frontend — Vistas EMS mock)
+- **Resumen** (`/resumen`) — 6 KPI cards (consumo, gasto, margen, centros, remarcadores, peak), alerta desconexión, curva de carga global SVG línea+área con pill "Peak 16:00", centros por consumo barras horizontales.
+- **Centros** (`/centros`) — Tabla cartera: centro, cliente, comuna, consumo MWh, margen $M (%), estado (Operativo/Advertencia/Alarma). 6 centros mock.
+- **Centro Detalle** (`/centros/:id`) — Tags (estado, cliente, comuna, m²), 4 KPIs (consumo, costo compra, precio venta, margen), curva de carga SVG, ficha del centro (superficie, intensidad kWh/m², precios), tabla remarcadores del centro. Sin scroll de página.
+- **Remarcadores** (`/remarcadores`) — 4 stat cards (dispositivos, conectados, sin señal, caídos), alerta desconexión, tabla flota: ID, centro, modelo, señal (barras + %), última lectura, estado. 9 remarcadores mock.
+- **Remarcador Detalle** (`/remarcadores/:id`) — 6 KPIs (potencia, energía, voltaje, corriente, FP, peak), selector de métrica (CustomSelect), **Highcharts Stock** con navigator bar inferior, botones 3h/6h/12h/24h, data a 15 min. Ficha dispositivo (conexión, señal, firmware, IP, Modbus, fase, V/I nominal). Data mock distinta por métrica (voltaje ~381V con sag, FP ~0.94 con variación por carga, corriente proporcional).
+- **Consumo** (`/consumo`) — Comparativa períodos (Sep vs Ago: consumo, peak, promedio, factor carga con delta %), franjas horarias (Punta/Llano/Valle con barras y % vs anterior), top 8 peaks de demanda (tabla), intensidad por centro (kWh/m² con barras color).
+- **Márgenes** (`/margenes`) — 4 KPIs (compra, venta, margen bruto, centros rentables), tabla margen por centro con barra visual %, fila total.
+- **Alertas** (`/alertas`) — 4 stat cards, tabla historial: tipo (Peak/Desconexión/Umbral), severidad, mensaje, centro, remarcador, fecha, estado (abierta/reconocida/resuelta). 6 alertas mock.
+- **Reportes** (`/reportes`) — 4 KPIs, tabla reportes generados (nombre, tipo badge, formato, periodo, fecha, tamaño, descarga), sección reportes programados (nombre, frecuencia, destino, activo/pausado). 6 reportes mock.
+- **Facturas** (`/facturas`) — 4 KPIs (pendientes, vencidas, facturado neto, total IVA), filtros pill (todas/pendiente/pagada/vencida), tabla 9 facturas mock. **Descarga PDF** — genera HTML formateado con desglose energía/demanda/cargo fijo y abre diálogo de impresión.
+
+### Changed (Nomenclatura)
+- "Edificio" → "Centro", "Medidor" → "Remarcador", "Pico" → "Peak" en toda la app.
+
+### Added (Infra)
+- **`deploy.sh`** en `monitoreo-v2/frontend/` — build + S3 sync + `no-cache` en index.html + CloudFront invalidation en un solo comando.
+- **Cache fix** — `index.html` con `Cache-Control: no-cache, no-store, must-revalidate`. Assets hasheados siguen cacheables.
+
+### Added (Users)
+- **darwin@hoktus.com** — super_admin Google, tenant Globe Power, 4 buildings.
+
+---
+
 ## [2.59.2] - 2026-09-16 — PERFIL GERENCIAL + DASHBOARD MOCKUP
 
 ### Added (Frontend — Perfil Gerencial)

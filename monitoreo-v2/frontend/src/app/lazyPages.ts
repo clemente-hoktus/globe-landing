@@ -408,6 +408,66 @@ export const LazyBuildingDetailPage = lazy(async () => {
   return { default: m.BuildingDetailPage };
 });
 
+export const LazyTenantUnitDetailPage = lazy(async () => {
+  const m = await import('../features/buildings/TenantUnitDetailPage');
+  return { default: m.TenantUnitDetailPage };
+});
+
+export const LazyResumenPage = lazy(async () => {
+  const m = await import('../features/ems/ResumenPage');
+  return { default: m.ResumenPage };
+});
+
+export const LazyCentrosPage = lazy(async () => {
+  const m = await import('../features/ems/CentrosPage');
+  return { default: m.CentrosPage };
+});
+
+export const LazyCentroDetailPage = lazy(async () => {
+  const m = await import('../features/ems/CentroDetailPage');
+  return { default: m.CentroDetailPage };
+});
+
+export const LazyRemarcadoresPage = lazy(async () => {
+  const m = await import('../features/ems/RemarcadoresPage');
+  return { default: m.RemarcadoresPage };
+});
+
+export const LazyRemarcadorDetailPage = lazy(async () => {
+  const m = await import('../features/ems/RemarcadorDetailPage');
+  return { default: m.RemarcadorDetailPage };
+});
+
+export const LazyLockedModule = lazy(async () => {
+  const m = await import('../features/ems/LockedModule');
+  return { default: m.LockedModule };
+});
+
+export const LazyConsumoMockPage = lazy(async () => {
+  const m = await import('../features/ems/ConsumoPage');
+  return { default: m.ConsumoPage };
+});
+
+export const LazyMargenesPage = lazy(async () => {
+  const m = await import('../features/ems/MargenesPage');
+  return { default: m.MargenesPage };
+});
+
+export const LazyAlertasMockPage = lazy(async () => {
+  const m = await import('../features/ems/AlertasPage');
+  return { default: m.AlertasPage };
+});
+
+export const LazyReportesMockPage = lazy(async () => {
+  const m = await import('../features/ems/ReportesPage');
+  return { default: m.ReportesPage };
+});
+
+export const LazyFacturasMockPage = lazy(async () => {
+  const m = await import('../features/ems/FacturasPage');
+  return { default: m.FacturasPage };
+});
+
 export const LazyMeterDetailPage = lazy(async () => {
   const m = await import('../features/monitoring/meter-detail/MeterDetailPage');
   return { default: m.MeterDetailPage };

@@ -10,6 +10,7 @@ import { useBuildingsQuery } from '../../hooks/queries/useBuildingsQuery';
 import { useMetersQuery } from '../../hooks/queries/useMetersQuery';
 import { useOperatorFilter } from '../../hooks/useOperatorFilter';
 import { useInvoicesQuery, useInvoiceLineItemsQuery } from '../../hooks/queries/useInvoicesQuery';
+import type { TenantUnit } from '../../types/tenant-unit';
 import { InvoicePdfPreview } from '../../components/billing/InvoicePdfPreview';
 import { InvoicePdfDownloadLink } from '../../components/billing/InvoicePdfDownloadLink';
 import { fmtNum, fmtClp, monthLabel } from '../../lib/formatters';
@@ -78,7 +79,7 @@ function aggregateByMonth(invoices: Invoice[]): MonthlyBilling[] {
 
 /* ── Component ── */
 
-type Tab = 'billing' | 'meters';
+type Tab = 'billing' | 'units' | 'meters';
 
 export function BuildingDetailPage() {
   const { buildingId } = useParams<{ buildingId: string }>();
@@ -101,6 +102,13 @@ export function BuildingDetailPage() {
   const metersQuery = useMetersQuery(buildingId);
   const invoicesQuery = useInvoicesQuery({ buildingId });
 
+  const units: TenantUnit[] = [
+    { id: 'mock-1', buildingId: buildingId!, name: 'Local 101 — Farmacia Cruz Verde', unitCode: 'L-101', externalUnitId: null, contactName: 'María López', contactEmail: 'mlopez@cruzverde.cl', userId: null, isActive: true, createdAt: '2026-01-15', updatedAt: '2026-01-15' },
+    { id: 'mock-2', buildingId: buildingId!, name: 'Local 102 — Starbucks', unitCode: 'L-102', externalUnitId: null, contactName: 'Carlos Muñoz', contactEmail: 'cmunoz@starbucks.cl', userId: null, isActive: true, createdAt: '2026-01-15', updatedAt: '2026-01-15' },
+    { id: 'mock-3', buildingId: buildingId!, name: 'Local 201 — Banco Estado', unitCode: 'L-201', externalUnitId: null, contactName: 'Andrea Soto', contactEmail: 'asoto@bancoestado.cl', userId: null, isActive: true, createdAt: '2026-02-01', updatedAt: '2026-02-01' },
+    { id: 'mock-4', buildingId: buildingId!, name: 'Local 202 — Claro', unitCode: 'L-202', externalUnitId: null, contactName: null, contactEmail: null, userId: null, isActive: false, createdAt: '2026-02-01', updatedAt: '2026-06-15' },
+    { id: 'mock-5', buildingId: buildingId!, name: 'Patio de Comidas', unitCode: 'PC-01', externalUnitId: null, contactName: 'Javier Reyes', contactEmail: 'jreyes@mall.cl', userId: null, isActive: true, createdAt: '2026-01-15', updatedAt: '2026-01-15' },
+  ];
   const invoices = invoicesQuery.data ?? [];
   const rawMeters = metersQuery.data ?? [];
   const meters = useMemo(() => {
@@ -167,6 +175,7 @@ export function BuildingDetailPage() {
       {/* Tab selector */}
       <div className="flex shrink-0 gap-1 px-1">
         <TabBtn label="Facturacion" active={activeTab === 'billing'} onClick={() => setActiveTab('billing')} />
+        <TabBtn label="Locales" active={activeTab === 'units'} onClick={() => setActiveTab('units')} count={units.length} />
         <TabBtn label="Medidores" active={activeTab === 'meters'} onClick={() => setActiveTab('meters')} count={meters.length} />
       </div>
 
@@ -299,6 +308,50 @@ export function BuildingDetailPage() {
             </DataWidget>
           </Card>
         </>
+      )}
+
+      {/* ── Units tab ── */}
+      {activeTab === 'units' && (
+        <Card className="flex min-h-0 flex-1 flex-col" noPadding>
+          <div className="flex items-center justify-between px-6 pt-4 pb-2">
+            <h2 className="text-sm font-semibold text-foreground">Locales / Tiendas</h2>
+            <span className="text-xs text-muted">{units.length} local{units.length !== 1 ? 'es' : ''}</span>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-4">
+            <table className="min-w-full divide-y divide-border">
+              <thead className="sticky top-0 z-10 bg-background">
+                <tr>
+                  <Th>Nombre</Th>
+                  <Th>Codigo</Th>
+                  <Th>Contacto</Th>
+                  <Th>Email</Th>
+                  <Th>Estado</Th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {units.map((u) => (
+                  <tr
+                    key={u.id}
+                    className="cursor-pointer hover:bg-surface"
+                    onClick={() => navigate(`/buildings/${buildingId}/units/${u.id}`)}
+                  >
+                    <Td className="font-medium text-foreground">{u.name}</Td>
+                    <Td>{u.unitCode}</Td>
+                    <Td>{u.contactName ?? '—'}</Td>
+                    <Td>{u.contactEmail ?? '—'}</Td>
+                    <Td>
+                      <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${
+                        u.isActive ? 'bg-success/10 text-success' : 'bg-raised text-muted'
+                      }`}>
+                        {u.isActive ? 'Activo' : 'Inactivo'}
+                      </span>
+                    </Td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
       )}
 
       {/* ── Meters tab ── */}

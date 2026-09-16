@@ -39,7 +39,7 @@ export const getSeriesColors = (): string[] => {
 // Shared chart options — light, agnostic base
 // ---------------------------------------------------------------------------
 
-const FONT_FAMILY = "'Inter Variable', ui-sans-serif, system-ui, sans-serif";
+const FONT_FAMILY = "'Geist', ui-sans-serif, system-ui, sans-serif";
 
 export const baseChartOptions = (): Highcharts.Options => {
   const c = getColors();
