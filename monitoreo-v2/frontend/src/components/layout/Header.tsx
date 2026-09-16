@@ -2,8 +2,6 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useClickOutside } from '../../hooks/useClickOutside';
-import { AdminSwitchers } from './AdminSwitchers';
-
 export function Header() {
   const { user } = useAuthStore();
   const navigate = useNavigate();
@@ -20,10 +18,13 @@ export function Header() {
     .toUpperCase();
 
   return (
-    <header className="relative z-30 flex h-12 shrink-0 items-center gap-3 border-b border-border bg-background px-4">
-      {/* Admin switchers */}
-      <AdminSwitchers />
-
+    <header className="relative z-30 flex h-12 shrink-0 items-center gap-3 bg-sidebar text-sidebar-fg px-4">
+      <div className="flex items-center gap-2.5">
+        <div className="flex h-8 w-8 items-center justify-center rounded-lg" style={{ backgroundColor: '#9FD838' }}>
+          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="#062C23" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+        </div>
+        <span className="text-sm font-semibold text-sidebar-fg">POWER Digital</span>
+      </div>
       <div className="flex-1" />
 
       {/* User menu */}

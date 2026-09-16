@@ -48,7 +48,7 @@ export function Sidebar() {
 
   return (
     <aside
-      className={`group/sidebar relative flex h-full min-h-0 shrink-0 flex-col overflow-visible bg-[var(--color-sidebar)] border-r border-[var(--color-sidebar-border)] transition-[width] duration-300 ease-in-out motion-reduce:transition-none ${
+      className={`group/sidebar relative flex h-full min-h-0 shrink-0 flex-col overflow-visible bg-[var(--color-sidebar)] transition-[width] duration-300 ease-in-out motion-reduce:transition-none ${
         expanded ? 'w-[210px]' : 'w-14'
       }`}
     >

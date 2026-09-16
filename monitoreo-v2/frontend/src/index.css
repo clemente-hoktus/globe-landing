@@ -2,16 +2,16 @@
 @import 'tailwindcss';
 
 @theme {
-  /* ── Light theme (default) ── */
-  --color-base:       #ffffff;
+  /* ── Light theme (default) — Figma EMS Power Digital ── */
+  --color-base:       #F6F8F7;
   --color-background: #ffffff;
-  --color-foreground: #1d1d1f;
-  --color-surface:    #f5f5f7;
-  --color-raised:     #ebebee;
-  --color-border:     #d6d6da;
-  --color-text:       #1d1d1f;
-  --color-muted:      #6e6e73;
-  --color-subtle:     #aeaeb2;
+  --color-foreground: #131818;
+  --color-surface:    #F6F8F7;
+  --color-raised:     #ECFBEE;
+  --color-border:     #D0E4E1;
+  --color-text:       #131818;
+  --color-muted:      #727C78;
+  --color-subtle:     #9CA8A4;
 
   /* Radius + elevation */
   --radius: 0.625rem;
@@ -25,24 +25,26 @@
   --shadow-float: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
 
   /* ── Semantic status ── */
-  --color-success: #34a65c;
+  --color-success: #0E8C43;
   --color-warning: #c49030;
   --color-danger:  #c0392b;
   --color-info:    #4a6ee0;
 
-  /* ── Brand ── */
-  --color-brand:       #3a5b1e;
-  --color-brand-hover: #272628;
+  /* ── Brand — Figma forest ── */
+  --color-brand:       #062C23;
+  --color-brand-hover: #083F32;
   --color-brand-muted: color-mix(in srgb, var(--color-brand) 10%, transparent);
   --color-brand-fg:    #ffffff;
+  --color-primary-btn:    #062C23;
+  --color-primary-btn-fg: #ffffff;
 
   /* ── App chrome (same bg, border separates) ── */
-  --color-sidebar:       #ffffff;
-  --color-sidebar-fg:    #1d1d1f;
-  --color-sidebar-muted: #6e6e73;
-  --color-sidebar-border: #e8e5df;
-  --color-sidebar-hover: rgba(0,0,0,0.03);
-  --color-sidebar-active: rgba(0,0,0,0.05);
+  --color-sidebar:       #212826;
+  --color-sidebar-fg:    #F6F8F7;
+  --color-sidebar-muted: #9CA8A4;
+  --color-sidebar-border: #373F38;
+  --color-sidebar-hover: rgba(255,255,255,0.06);
+  --color-sidebar-active: rgba(255,255,255,0.09);
 
   /* ── Charts ── */
   --color-chart-1:          var(--color-brand);
@@ -62,72 +64,80 @@
 /* ── Dark theme ── */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --color-base:       #111114;
-    --color-background: #18181b;
-    --color-foreground: #ececef;
-    --color-surface:    #1f1f23;
-    --color-raised:     #27272b;
-    --color-border:     #3a3a40;
-    --color-text:       #ececef;
-    --color-muted:      #9f9fa8;
-    --color-subtle:     #6b6b75;
+    --color-base:       #0A090C;
+    --color-background: #131816;
+    --color-foreground: #F6F8F7;
+    --color-surface:    #05180F;
+    --color-raised:     #082C23;
+    --color-border:     #373F38;
+    --color-text:       #F6F8F7;
+    --color-muted:      #9CA8A4;
+    --color-subtle:     #727C78;
     --color-success: #5ec680;
     --color-warning: #d4953a;
     --color-danger:  #d05050;
     --color-info:    #6b8aed;
-    --color-sidebar:       #18181b;
-    --color-sidebar-fg:    #ececef;
-    --color-sidebar-muted: #9f9fa8;
-    --color-sidebar-border: #3a3630;
+    --color-sidebar:       #212826;
+    --color-sidebar-fg:    #F6F8F7;
+    --color-sidebar-muted: #9CA8A4;
+    --color-sidebar-border: #373F38;
     --color-sidebar-hover: rgba(255,255,255,0.06);
     --color-sidebar-active: rgba(255,255,255,0.09);
+    --color-primary-btn:    #ffffff;
+    --color-primary-btn-fg: #212826;
     --shadow-panel: 0 1px 2px 0 rgb(0 0 0 / 0.2);
     --shadow-float: 0 4px 8px -1px rgb(0 0 0 / 0.3);
   }
 }
 :root[data-theme="dark"] {
-  --color-base:       #111114;
-  --color-background: #18181b;
-  --color-foreground: #ececef;
-  --color-surface:    #1f1f23;
-  --color-raised:     #27272b;
-  --color-border:     #3a3a40;
-  --color-text:       #ececef;
-  --color-muted:      #9f9fa8;
-  --color-subtle:     #6b6b75;
+  --color-base:       #0A090C;
+  --color-background: #212826;
+  --color-foreground: #F6F8F7;
+  --color-surface:    #05180F;
+  --color-raised:     #082C23;
+  --color-border:     #373F38;
+  --color-text:       #F6F8F7;
+  --color-muted:      #9CA8A4;
+  --color-subtle:     #727C78;
   --color-success: #5ec680;
   --color-warning: #d4953a;
   --color-danger:  #d05050;
   --color-info:    #6b8aed;
-  --color-sidebar:       #18181b;
-  --color-sidebar-fg:    #ececef;
-  --color-sidebar-muted: #9f9fa8;
-  --color-sidebar-border: #3a3630;
+  --color-sidebar:       #212826;
+  --color-sidebar-fg:    #F6F8F7;
+  --color-sidebar-muted: #9CA8A4;
+  --color-sidebar-border: #373F38;
   --color-sidebar-hover: rgba(255,255,255,0.06);
   --color-sidebar-active: rgba(255,255,255,0.09);
+  --color-primary-btn:    #ffffff;
+  --color-primary-btn-fg: #212826;
   --shadow-panel: 0 1px 2px 0 rgb(0 0 0 / 0.2);
   --shadow-float: 0 4px 8px -1px rgb(0 0 0 / 0.3);
 }
 :root[data-theme="light"] {
-  --color-base:       #ffffff;
+  --color-base:       #F6F8F7;
   --color-background: #ffffff;
-  --color-foreground: #1d1d1f;
-  --color-surface:    #f5f5f7;
-  --color-raised:     #ebebee;
-  --color-border:     #d6d6da;
-  --color-text:       #1d1d1f;
-  --color-muted:      #6e6e73;
-  --color-subtle:     #aeaeb2;
-  --color-success: #34a65c;
+  --color-foreground: #131818;
+  --color-surface:    #F6F8F7;
+  --color-raised:     #ECFBEE;
+  --color-border:     #D0E4E1;
+  --color-text:       #131818;
+  --color-muted:      #727C78;
+  --color-subtle:     #9CA8A4;
+  --color-success: #0E8C43;
   --color-warning: #c49030;
   --color-danger:  #c0392b;
   --color-info:    #4a6ee0;
-  --color-sidebar:       #ffffff;
-  --color-sidebar-fg:    #1d1d1f;
-  --color-sidebar-muted: #6e6e73;
-  --color-sidebar-border: #e8e5df;
-  --color-sidebar-hover: rgba(0,0,0,0.03);
-  --color-sidebar-active: rgba(0,0,0,0.05);
+  --color-sidebar:       #212826;
+  --color-sidebar-fg:    #F6F8F7;
+  --color-sidebar-muted: #9CA8A4;
+  --color-sidebar-border: #373F38;
+  --color-sidebar-hover: rgba(255,255,255,0.06);
+  --color-sidebar-active: rgba(255,255,255,0.09);
+  --color-primary-btn:    #062C23;
+  --color-primary-btn-fg: #ffffff;
+  --color-primary-btn:    #062C23;
+  --color-primary-btn-fg: #ffffff;
 }
 
 body {
@@ -193,6 +203,7 @@ button, [role="button"] {
   width: 100%;
   border-radius: var(--radius-control);
   border: 1px solid var(--color-border);
+  background-color: var(--color-background);
   padding: 0.5rem 0.75rem;
   font-size: 0.8125rem;
   color: var(--color-foreground);

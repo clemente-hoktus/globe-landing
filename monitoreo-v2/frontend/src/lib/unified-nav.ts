@@ -94,18 +94,10 @@ export const UNIFIED_NAV: UnifiedNavGroup[] = [
 ];
 
 export function getVisibleNav(
-  hasAny: (...perms: string[]) => boolean,
-  hasTenant: boolean,
+  _hasAny: (...perms: string[]) => boolean,
+  _hasTenant: boolean,
 ): UnifiedNavGroup[] {
-  return UNIFIED_NAV
-    .map((group) => ({
-      ...group,
-      entries: group.entries.filter((entry) => {
-        if (hasTenant && entry.platformOnly) return false;
-        return hasAny(...entry.requiredPerms);
-      }),
-    }))
-    .filter((group) => group.entries.length > 0);
+  return [];
 }
 
 export function findActiveEntry(

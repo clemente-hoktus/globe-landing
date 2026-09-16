@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.59.0] - 2026-09-15 — FIGMA DESIGN SYSTEM + LOGIN REDISEÑO
+
+### Changed (Frontend — Design System Figma)
+- **Tokens de color alineados a Figma** — neutrales grises reemplazados por paleta forest-green del design system "EMS Power Digital". Light: base `#F6F8F7`, surface `#F6F8F7`, border `#D0E4E1`. Dark: background `#131816`, surface `#05180F`, border `#373F38`.
+- **Brand actualizado** — `#3a5b1e` → `#062C23` (forest/950). Brand hover: `#083F32`. Botón primario: `#062C23` (light) / blanco (dark) via token `--color-primary-btn`.
+- **Sidebar y topbar siempre oscuros** — `#212826` en ambos modos, sin bordes. Texto sidebar `#F6F8F7`. Vista (content area) separada con `bg-background`.
+- **Layout reestructurado** — `AppLayout` root usa `bg-sidebar` (`#212826`), content area usa `bg-background` (`#131816` dark / `#ffffff` light). Header sin `border-b`, sidebar sin `border-r`.
+- **Logo POWER Digital en topbar** — cuadrado `#9FD838` con `rounded-lg`, icono rayo contorneado `#062C23`, texto "POWER Digital".
+- **AdminSwitchers removidos** del topbar.
+- **Sidebar vaciado** — `getVisibleNav()` retorna `[]`. Vistas deshabilitadas del nav mientras se rediseña.
+
+### Changed (Frontend — Login Rediseño)
+- **Login rediseñado desde Figma** — layout split: panel izquierdo siempre oscuro (`#212826`) con branding POWER Digital (logo `#6BA015`, heading, accent line, arcos decorativos `#6BA015`), panel derecho con formulario OAuth.
+- **Toggle light/dark manual** — botón sol/luna en esquina superior derecha del login. Setea `data-theme` en `:root`, se limpia al salir.
+- **Colores Figma verificados** — botón primario `#062C23` (light) invierte a blanco (dark). Accent green `#6BA015`. Footer "Contacta a soporte".
+- **MFA preservado** — flujos de verificación, setup QR y recovery codes restyled con nuevos tokens.
+- **Dashboard vacío** — `/` muestra logo POWER Digital centrado sobre `bg-background`. Sin redirección por perfil.
+
+---
+
 ## [2.58.1] - 2026-08-19 — MFA LOGIN FIX
 
 ### Fixed (Prod DB)

@@ -6,11 +6,7 @@ import { useAuth } from '../../hooks/auth/useAuth';
 import { clearSessionFlag } from '../../hooks/auth/useSessionResolver';
 import { authEndpoints } from '../../services/endpoints';
 import { clearDevBearerToken } from '../../services/api';
-import globeLogo from '../../assets/globe-logo.png';
 
-/**
- * OAuth, SSO and MFA login screen with Handle-inspired split layout.
- */
 export function LoginPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -30,12 +26,28 @@ export function LoginPage() {
   const [passkeyEmail, setPasskeyEmail] = useState('');
   const [passkeyError, setPasskeyError] = useState<string | null>(null);
   const [passkeyLoading, setPasskeyLoading] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const stored = document.documentElement.getAttribute('data-theme');
+    if (stored === 'light' || stored === 'dark') return stored;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
 
   useEffect(() => {
     clearSessionFlag();
     clearDevBearerToken();
     void authEndpoints.clearSessionCookies();
   }, []);
+
+  const toggleTheme = useCallback(() => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
+  }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    return () => { document.documentElement.removeAttribute('data-theme'); };
+  }, [theme]);
 
   useEffect(() => {
     if (ssoCallbackHandled) return;
@@ -86,56 +98,59 @@ export function LoginPage() {
     if (setupCode.length === 6) verifyMfaSetup(setupCode);
   };
 
-  const oauthBtnClass =
-    'flex w-full items-center justify-center gap-2.5 rounded-full border border-border bg-background px-4 py-3 text-sm font-medium text-foreground transition-all hover:border-subtle hover:bg-surface hover:shadow-sm disabled:opacity-50';
-
-  const primaryBtnClass =
-    'w-full rounded-full bg-brand px-4 py-3 text-sm font-medium text-brand-fg transition-opacity hover:opacity-90 disabled:opacity-50';
-
   const subtitle = mfaSetupData
     ? 'Configura tu autenticación de dos factores'
     : mfaPending
       ? 'Ingresa tu código de verificación'
       : passkeyMode
         ? 'Ingresa tu correo para autenticarte con biométrico'
-        : 'Accede con tu cuenta corporativa';
+        : 'Ingresa con tu cuenta corporativa.';
 
   return (
     <div className="flex min-h-screen">
-      <div className="relative hidden w-[44%] shrink-0 flex-col justify-between overflow-hidden bg-sidebar p-10 text-sidebar-fg lg:flex">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.07]"
-          style={{
-            backgroundImage:
-              'linear-gradient(var(--color-sidebar-fg) 1px, transparent 1px), linear-gradient(90deg, var(--color-sidebar-fg) 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-          }}
-        />
-        <div className="relative">
-          <img src={globeLogo} alt="Globe Power" className="h-10 w-auto brightness-0 invert" />
+      <div className="relative hidden w-[40%] shrink-0 flex-col justify-between overflow-hidden p-10 lg:flex" style={{ backgroundColor: '#212826' }}>
+        <div className="pointer-events-none absolute bottom-0 right-0 h-[380px] w-[380px] translate-x-1/3 translate-y-1/4 rounded-full" style={{ border: '1.4px solid #6BA015', opacity: 0.25 }} />
+        <div className="pointer-events-none absolute bottom-0 right-0 h-[540px] w-[540px] translate-x-1/3 translate-y-1/4 rounded-full" style={{ border: '1.4px solid #6BA015', opacity: 0.15 }} />
+
+        <div className="relative flex items-center gap-3">
+          <PowerDigitalLogo />
+          <span className="text-lg font-semibold text-white">POWER Digital</span>
         </div>
-        <div className="relative space-y-4">
-          <p className="text-xs font-medium uppercase tracking-[0.2em] text-sidebar-muted">
-            Monitoreo energético
-          </p>
-          <h1 className="max-w-sm text-3xl font-semibold leading-tight tracking-tight">
-            Visibilidad operativa en un solo lugar
+
+        <div className="relative space-y-6">
+          <h1 className="max-w-md text-[2.5rem] font-semibold leading-[1.1] tracking-tight text-white">
+            Gestión energética inteligente para Parque Arauco
           </h1>
-          <p className="max-w-md text-sm leading-relaxed text-sidebar-muted">
-            Medición, alertas y facturación para edificios y operadores — con la precisión que tu operación exige.
+          <div className="h-1 w-16 rounded-full" style={{ backgroundColor: '#6BA015' }} />
+          <p className="max-w-md text-sm leading-relaxed text-white/60">
+            Monitorea, controla y audita el consumo energético en tiempo real, en un solo lugar.
           </p>
         </div>
-        <div className="relative h-4 shrink-0" aria-hidden="true" />
+
+        <div className="relative space-y-1 text-xs text-white/40">
+          <p>© 2026 Globe Power SpA</p>
+          <p>POWER Digital® EMS · Parque Arauco</p>
+        </div>
       </div>
 
-      <div className="flex flex-1 items-center justify-center bg-surface px-6 py-10">
-        <div className="panel w-full max-w-md space-y-6 p-8 md:p-10">
-          <div className="lg:hidden">
-            <img src={globeLogo} alt="Globe Power" className="mx-auto mb-4 h-9 w-auto" />
+      <div className="relative flex flex-1 items-center justify-center bg-background px-6 py-10">
+        <button
+          type="button"
+          onClick={toggleTheme}
+          className="absolute right-6 top-6 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-surface text-foreground transition-colors hover:bg-raised"
+          aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+        >
+          {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+        </button>
+        <div className="w-full max-w-md space-y-8">
+          <div className="lg:hidden flex items-center justify-center gap-3 mb-6">
+            <PowerDigitalLogo />
+            <span className="text-lg font-semibold text-foreground">POWER Digital</span>
           </div>
-          <div className="text-center lg:text-left">
-            <h2 className="text-xl font-semibold tracking-tight text-foreground">EMS</h2>
-            <p className="mt-1.5 text-sm text-muted">{subtitle}</p>
+
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">Iniciar sesión</h2>
+            <p className="mt-2 text-sm text-muted">{subtitle}</p>
           </div>
 
           {error && (
@@ -146,7 +161,6 @@ export function LoginPage() {
             <RecoveryCodesPanel
               codes={mfaRecoveryCodes}
               onContinue={() => void finishMfaSetupAfterRecovery()}
-              primaryBtnClass={primaryBtnClass}
             />
           ) : mfaSetupData ? (
             <MfaSetupForm
@@ -160,7 +174,6 @@ export function LoginPage() {
               }}
               onSubmit={handleSetupVerify}
               isLoading={isLoading}
-              primaryBtnClass={primaryBtnClass}
             />
           ) : mfaPending ? (
             <MfaVerifyForm
@@ -168,7 +181,6 @@ export function LoginPage() {
               onMfaCodeChange={setMfaCode}
               onSubmit={handleMfaSubmit}
               isLoading={isLoading}
-              primaryBtnClass={primaryBtnClass}
             />
           ) : passkeyMode ? (
             <PasskeyLoginForm
@@ -178,62 +190,60 @@ export function LoginPage() {
               onBack={() => { setPasskeyMode(false); setPasskeyError(null); }}
               isLoading={passkeyLoading}
               error={passkeyError}
-              primaryBtnClass={primaryBtnClass}
-              oauthBtnClass={oauthBtnClass}
             />
           ) : (
             <OAuthPanel
-              oauthBtnClass={oauthBtnClass}
               isLoading={isLoading}
               onMicrosoft={loginMicrosoft}
               onGoogle={() => googleLogin()}
               onPasskey={() => setPasskeyMode(true)}
             />
           )}
+
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-muted">¿Problemas para acceder?</span>
+            <a href="mailto:soporte@globepower.cl" className="font-medium hover:underline" style={{ color: '#6BA015' }}>
+              Contacta a soporte
+            </a>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
+const PRIMARY_BTN = 'w-full rounded-lg px-4 py-3.5 text-sm font-semibold transition-opacity hover:opacity-90 disabled:opacity-50 bg-primary-btn text-primary-btn-fg';
+const SECONDARY_BTN = 'flex w-full items-center justify-center gap-2.5 rounded-lg border border-border bg-background px-4 py-3.5 text-sm font-medium text-foreground transition-all hover:bg-surface disabled:opacity-50';
+
 interface OAuthPanelProps {
-  oauthBtnClass: string;
   isLoading: boolean;
   onMicrosoft: () => void;
   onGoogle: () => void;
   onPasskey: () => void;
 }
 
-function OAuthPanel({
-  oauthBtnClass,
-  isLoading,
-  onMicrosoft,
-  onGoogle,
-  onPasskey,
-}: Readonly<OAuthPanelProps>) {
+function OAuthPanel({ isLoading, onMicrosoft, onGoogle, onPasskey }: Readonly<OAuthPanelProps>) {
   return (
     <div className="space-y-4">
-      <p className="rounded-lg bg-surface px-4 py-3 text-xs leading-relaxed text-muted">
-        Al iniciar sesión, autorizas la recopilación de tu nombre y correo desde tu proveedor OAuth.
-        Puedes ejercer tus derechos ARCO+ desde tu perfil.{' '}
-        <a href="/privacy-policy" className="font-medium text-foreground underline-offset-2 hover:underline">
-          Política de privacidad
-        </a>
-      </p>
-      <button type="button" onClick={onMicrosoft} disabled={isLoading} className={oauthBtnClass}>
-        <MicrosoftIcon />
-        Continuar con Microsoft
+      <button type="button" onClick={onMicrosoft} disabled={isLoading} className={PRIMARY_BTN}>
+        <span className="flex items-center justify-center gap-2.5">
+          <MicrosoftIcon />
+          Continuar con Microsoft
+        </span>
       </button>
-      <button type="button" onClick={onGoogle} disabled={isLoading} className={oauthBtnClass}>
+
+      <button type="button" onClick={onGoogle} disabled={isLoading} className={SECONDARY_BTN}>
         <GoogleIcon />
         Continuar con Google
       </button>
-      <div className="relative flex items-center gap-3">
+
+      <div className="relative flex items-center gap-3 py-1">
         <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-subtle">o</span>
+        <span className="flex h-6 w-6 items-center justify-center rounded-full border border-border text-[10px] text-muted">o</span>
         <div className="h-px flex-1 bg-border" />
       </div>
-      <button type="button" onClick={onPasskey} disabled={isLoading} className={oauthBtnClass}>
+
+      <button type="button" onClick={onPasskey} disabled={isLoading} className={SECONDARY_BTN}>
         <PasskeyIcon />
         Iniciar con passkey
       </button>
@@ -248,20 +258,9 @@ interface PasskeyLoginFormProps {
   onBack: () => void;
   isLoading: boolean;
   error: string | null;
-  primaryBtnClass: string;
-  oauthBtnClass: string;
 }
 
-function PasskeyLoginForm({
-  email,
-  onEmailChange,
-  onSubmit,
-  onBack,
-  isLoading,
-  error,
-  primaryBtnClass,
-  oauthBtnClass,
-}: Readonly<PasskeyLoginFormProps>) {
+function PasskeyLoginForm({ email, onEmailChange, onSubmit, onBack, isLoading, error }: Readonly<PasskeyLoginFormProps>) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
@@ -271,7 +270,7 @@ function PasskeyLoginForm({
           autoFocus
           value={email}
           onChange={(e) => onEmailChange(e.target.value)}
-          placeholder="tu@empresa.com"
+          placeholder="nombre@empresa.cl"
           className="input-field"
         />
       </div>
@@ -285,10 +284,10 @@ function PasskeyLoginForm({
           )}
         </div>
       )}
-      <button type="submit" disabled={isLoading || !email.trim()} className={primaryBtnClass}>
+      <button type="submit" disabled={isLoading || !email.trim()} className={PRIMARY_BTN}>
         {isLoading ? 'Verificando...' : 'Continuar con biométrico'}
       </button>
-      <button type="button" onClick={onBack} className={oauthBtnClass}>
+      <button type="button" onClick={onBack} className={SECONDARY_BTN}>
         Volver a opciones de inicio
       </button>
     </form>
@@ -300,19 +299,9 @@ interface MfaVerifyFormProps {
   onMfaCodeChange: (code: string) => void;
   onSubmit: (e: React.FormEvent) => void;
   isLoading: boolean;
-  primaryBtnClass: string;
 }
 
-/**
- * MFA code entry for returning users.
- */
-function MfaVerifyForm({
-  mfaCode,
-  onMfaCodeChange,
-  onSubmit,
-  isLoading,
-  primaryBtnClass,
-}: Readonly<MfaVerifyFormProps>) {
+function MfaVerifyForm({ mfaCode, onMfaCodeChange, onSubmit, isLoading }: Readonly<MfaVerifyFormProps>) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
@@ -330,10 +319,10 @@ function MfaVerifyForm({
           className="input-field text-center font-mono text-xl tracking-[0.3em]"
         />
       </div>
-      <button type="submit" disabled={isLoading || mfaCode.length !== 6} className={primaryBtnClass}>
+      <button type="submit" disabled={isLoading || mfaCode.length !== 6} className={PRIMARY_BTN}>
         {isLoading ? 'Verificando...' : 'Verificar'}
       </button>
-      <p className="text-center text-xs text-subtle">
+      <p className="text-center text-xs text-muted">
         Abre tu app de autenticación y copia el código de 6 dígitos.
       </p>
     </form>
@@ -348,50 +337,27 @@ interface MfaSetupFormProps {
   onRegenerate: () => void;
   onSubmit: (e: React.FormEvent) => void;
   isLoading: boolean;
-  primaryBtnClass: string;
 }
 
-/**
- * Guided MFA first-time setup flow.
- */
-function MfaSetupForm({
-  qrDataUrl,
-  secret,
-  setupCode,
-  onSetupCodeChange,
-  onRegenerate,
-  onSubmit,
-  isLoading,
-  primaryBtnClass,
-}: Readonly<MfaSetupFormProps>) {
+function MfaSetupForm({ qrDataUrl, secret, setupCode, onSetupCodeChange, onRegenerate, onSubmit, isLoading }: Readonly<MfaSetupFormProps>) {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
-      <div className="panel-muted space-y-3 p-4">
+      <div className="space-y-3 rounded-lg border border-border bg-surface p-4">
         <p className="text-sm font-semibold text-foreground">Escanea el código QR</p>
         <p className="text-xs text-muted">
           Funciona igual en local y en producción: la app solo usa el código de 6 dígitos, no la URL del sitio.
           Borra entradas viejas de &quot;EnergyMonitor&quot; antes de escanear.
         </p>
         <div className="flex justify-center rounded-lg bg-background p-3">
-          <img
-            key={secret}
-            src={qrDataUrl}
-            alt="Código QR para MFA"
-            className="h-44 w-44"
-          />
+          <img key={secret} src={qrDataUrl} alt="Código QR para MFA" className="h-44 w-44" />
         </div>
         <div className="space-y-1">
-          <p className="text-xs font-medium text-subtle">Clave manual (si el QR falla)</p>
+          <p className="text-xs font-medium text-muted">Clave manual (si el QR falla)</p>
           <code className="block break-all rounded-lg bg-raised px-2 py-1 font-mono text-xs text-foreground">
             {secret}
           </code>
         </div>
-        <button
-          type="button"
-          onClick={onRegenerate}
-          disabled={isLoading}
-          className="text-xs text-foreground hover:underline disabled:opacity-50"
-        >
+        <button type="button" onClick={onRegenerate} disabled={isLoading} className="text-xs text-foreground hover:underline disabled:opacity-50">
           Generar nuevo QR
         </button>
       </div>
@@ -405,7 +371,7 @@ function MfaSetupForm({
         placeholder="000000"
         className="input-field text-center font-mono text-xl tracking-[0.3em]"
       />
-      <button type="submit" disabled={isLoading || setupCode.length !== 6} className={primaryBtnClass}>
+      <button type="submit" disabled={isLoading || setupCode.length !== 6} className={PRIMARY_BTN}>
         {isLoading ? 'Verificando...' : 'Activar y continuar'}
       </button>
     </form>
@@ -415,17 +381,9 @@ function MfaSetupForm({
 interface RecoveryCodesPanelProps {
   codes: string[];
   onContinue: () => void;
-  primaryBtnClass: string;
 }
 
-/**
- * Displays MFA recovery codes after successful setup.
- */
-function RecoveryCodesPanel({
-  codes,
-  onContinue,
-  primaryBtnClass,
-}: Readonly<RecoveryCodesPanelProps>) {
+function RecoveryCodesPanel({ codes, onContinue }: Readonly<RecoveryCodesPanelProps>) {
   return (
     <div className="space-y-4">
       <div className="rounded-lg border border-success/30 bg-success/5 p-4">
@@ -439,9 +397,36 @@ function RecoveryCodesPanel({
           </code>
         ))}
       </div>
-      <button type="button" onClick={onContinue} className={primaryBtnClass}>
+      <button type="button" onClick={onContinue} className={PRIMARY_BTN}>
         Ya los guardé, entrar a la plataforma
       </button>
+    </div>
+  );
+}
+
+function SunIcon(): ReactElement {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <circle cx="12" cy="12" r="5" />
+      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+    </svg>
+  );
+}
+
+function MoonIcon(): ReactElement {
+  return (
+    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+    </svg>
+  );
+}
+
+function PowerDigitalLogo(): ReactElement {
+  return (
+    <div className="flex h-10 w-10 items-center justify-center rounded-full" style={{ backgroundColor: '#6BA015' }}>
+      <svg className="h-5 w-5 text-white" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+      </svg>
     </div>
   );
 }

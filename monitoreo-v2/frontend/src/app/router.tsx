@@ -4,26 +4,22 @@ import { LayoutShell } from '../components/layout/LayoutShell';
 import { ProtectedRoute } from '../components/auth/ProtectedRoute';
 import { RequirePerms } from '../components/auth/RequirePerms';
 import { RequireTenantLayout } from '../components/ui/RequireTenant';
-import { usePermissions } from '../hooks/usePermissions';
 
-/**
- * Redirects to the correct dashboard based on profile:
- * - super_admin without tenant → Platform
- * - gerencial → Panel Consolidado
- * - others → General dashboard
- */
-const PROFILE_DASHBOARD: Record<string, string> = {
-  gerencial: '/dashboard/consolidado',
-  operacional: '/operacional/monitoreo',
-  tecnico: '/tecnico/ordenes',
-  auditor: '/auditor/calidad-datos',
-  super_admin: '/admin/tenants-malls',
-};
+function EmptyDashboard() {
+  return (
+    <div className="flex h-full items-center justify-center">
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full" style={{ backgroundColor: '#6BA015' }}>
+          <svg className="h-7 w-7 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" /></svg>
+        </div>
+        <span className="text-lg font-semibold text-foreground">POWER Digital</span>
+      </div>
+    </div>
+  );
+}
 
 function DashboardIndex() {
-  const { profile } = usePermissions();
-  const redirect = PROFILE_DASHBOARD[profile];
-  return redirect ? <Navigate to={redirect} replace /> : <LazyDashboardPage />;
+  return <EmptyDashboard />;
 }
 import { LoginRouteShell } from '../components/routing/LoginRouteShell';
 import {
@@ -60,7 +56,6 @@ import {
   LazyMetersUnifiedPage,
   LazyAlertsPage,
   LazyComponentsPage,
-  LazyDashboardPage,
   LazyExecutiveDashboardPage,
   LazyExecutiveSitePage,
   LazyCompareDashboardPage,
